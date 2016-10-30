@@ -4,9 +4,11 @@ public class BuscaProfund {
 
 	public static void DFS(Grafo g){
 		List<Vertice> lista = g.getLista();
+		int compconex=1;
 		for (Vertice v : lista) {
 			if(v.visitado == false){
 				DFSVisit(g,v);
+				compconex++;
 			}
 		}
 	}
