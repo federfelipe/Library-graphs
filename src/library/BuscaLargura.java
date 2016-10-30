@@ -6,8 +6,6 @@ public class BuscaLargura {
 	static Queue<Vertice> q = new LinkedList<Vertice>();
 	
 	
-	
-	
 	public static void BFS(Grafo g, Vertice s){
 	
 		try{
