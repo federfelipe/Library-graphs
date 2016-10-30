@@ -8,18 +8,20 @@ public class BuscaProfund {
 		for (Vertice v : lista) {
 			if(v.isVisitado() == false){
 				v.setComponente(compconex);
-				DFSVisit(g,v);
+				DFSVisit(g,v,compconex);
 				compconex++;
 			}
 		}
 	}
 	
-	public static void DFSVisit(Grafo g, Vertice v){
+	public static void DFSVisit(Grafo g, Vertice v,int compconex){
 		v.setVisitado(true);
 		System.out.println(v.numero);
 		for (Vertice w : v.adj) {
 			if(w.isVisitado() == false){
 				DFSVisit(g,w);
+				w.setComponente(compconex);
+				
 			}
 		}
 	}
