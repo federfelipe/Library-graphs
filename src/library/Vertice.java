@@ -6,6 +6,7 @@ public class Vertice {
 	int numero;
 	boolean visitado=false;
 	Vertice pai;
+	int componente;
 	List<Vertice> adj = new ArrayList<Vertice>();
 	
 	public Vertice(int num){
@@ -30,6 +31,13 @@ public class Vertice {
 
 	public void setVisitado(boolean visitado) {
 		this.visitado = visitado;
+	}
+	
+	public void setComponente(int num){
+		componente=num;
+	}
+	public int getComponente(){
+		return componente;
 	}
 
 	public List<Vertice> getAdj() {
