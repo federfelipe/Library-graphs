@@ -7,6 +7,7 @@ public class BuscaProfund {
 		int compconex=1;
 		for (Vertice v : lista) {
 			if(v.visitado == false){
+				v.setComponente(compconex);
 				DFSVisit(g,v);
 				compconex++;
 			}
