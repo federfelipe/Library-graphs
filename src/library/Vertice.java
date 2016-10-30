@@ -33,8 +33,8 @@ public class Vertice {
 		this.visitado = visitado;
 	}
 	
-	public void setComponente(int num){
-		componente=num;
+	public void setComponente(int componente){
+		this.componente=componente;
 	}
 	public int getComponente(){
 		return componente;
