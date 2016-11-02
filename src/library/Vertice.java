@@ -5,10 +5,11 @@ import java.util.List;
 
 public class Vertice {
 	
-	int numero;
-	boolean visitado=false;
-	Vertice pai;
-	int componente;
+	private int numero;
+	private boolean visitado=false;
+	private Vertice pai;
+
+	private int componente;
 	List<Vertice> adj = new ArrayList<Vertice>();
 	
 	public Vertice(int num){
@@ -29,6 +30,14 @@ public class Vertice {
 
 	public boolean isVisitado() {
 		return visitado;
+	}
+	
+	public Vertice getPai() {
+		return pai;
+	}
+
+	public void setPai(Vertice pai) {
+		this.pai = pai;
 	}
 
 	public void setVisitado(boolean visitado) {

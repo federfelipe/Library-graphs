@@ -8,21 +8,21 @@ public class BuscaLargura {
 	static Queue<Vertice> q = new LinkedList<Vertice>();
 	
 	
-	public static void BFS(Grafo g, Vertice s){
+	public static void BFS(Graph g, Vertice s){
 	
 		try{
 		q.offer(s);
-		s.visitado = true;
+		s.setVisitado(true);
 		while(!(q.isEmpty())){
 			Vertice u = q.poll();
 			System.out.println("");
-			System.out.print( + u.numero + " adjs : ");
+			System.out.print( + u.getNumero() + " adjs : ");
 			for (Vertice v : u.adj) {
-				if(v.visitado == false){
-					v.pai = u;
-					v.visitado = true;
+				if(v.isVisitado() == false){
+					v.setPai(u);
+					v.setVisitado(true);
 					q.add(v);
-					System.out.print(v.numero + " ");
+					System.out.print(v.getNumero() + " ");
 				}
 			}
 			

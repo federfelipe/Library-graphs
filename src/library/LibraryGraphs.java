@@ -11,38 +11,43 @@ public class LibraryGraphs {
 	public LibraryGraphs(){
 	}
 	
-	public List<Vertice> BufferedReader(String filePath) {
+	public Graph BufferedReader(String filePath) {
 	    BufferedReader br = null;
 		String sCurrentLine;
 		String[] line;
-		List<Vertice> graph = new ArrayList<Vertice>();
+		Graph g = new Graph();
+		List<Vertice> v = new ArrayList<Vertice>();
+		List<Edge> e = new ArrayList<Edge>();
 		int size;
 		
 		try {
 				br = new BufferedReader(new FileReader(filePath));
 				try{
 					size = Integer.parseInt(br.readLine());
-				} catch(NumberFormatException e){
+				} catch(NumberFormatException nfe){
 					System.out.println("The file " + filePath + "doesn't match with the library standard");
 					return null;
 				}
 				
-				for(int i = 0; i < size; i++){
-					graph.add(new Vertice(i));
+				for(int i = 0; i <= size; i++){
+					v.add(new Vertice(i));
 				}
 				
 				
 				while ((sCurrentLine = br.readLine()) != null) {
 					line = sCurrentLine.split(" ");
-					graph.get(Integer.parseInt(line[0])).addAdj(graph.get(Integer.parseInt(line[1])));
-					graph.get(Integer.parseInt(line[1])).addAdj(graph.get(Integer.parseInt(line[0])));
+					v.get(Integer.parseInt(line[0])).addAdj(v.get(Integer.parseInt(line[1])));
+					v.get(Integer.parseInt(line[1])).addAdj(v.get(Integer.parseInt(line[0])));
 					if(line.length == 3){
-						//Create a new edge and add it's weight.
+						e.add(new Edge(v.get(Integer.parseInt(line[0])), v.get(Integer.parseInt(line[1])),
+								Double.parseDouble(line[2])));
 					}
 				}
+				g.setE(e);
+				g.setV(v);
 
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
 			} finally {
 				try {
 					if (br != null)br.close();
@@ -51,6 +56,6 @@ public class LibraryGraphs {
 					return null;
 				}
 			}
-			return graph;
+			return g;
 		}
 } 
