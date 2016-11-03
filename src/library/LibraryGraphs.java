@@ -6,12 +6,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class containing functions to manipulate graphs.
+ */
 public class LibraryGraphs {
-
-	public LibraryGraphs(){
-	}
 	
-	public Graph BufferedReader(String filePath) {
+	/**
+	 * @brief Reads a file containing information about a graph as an adjacency list.
+	 * @param filePath The path to the file containing information about a graph.
+	 * @return A {@link library.Graph} containing the information read from file.
+	 */
+	public Graph readFileAsAdjacencyList(String filePath) {
 	    BufferedReader br = null;
 		String sCurrentLine;
 		String[] line;

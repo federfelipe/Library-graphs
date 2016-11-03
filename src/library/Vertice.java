@@ -3,6 +3,9 @@ package library;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a vertice from a {@link library.Graph}.
+ */
 public class Vertice {
 	
 	private int numero;

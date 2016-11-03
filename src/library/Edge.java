@@ -1,5 +1,8 @@
 package library;
 
+/**
+ * Represents an edge from a {@link library.Graph}.
+ */
 public class Edge {
 	private Vertice v1, v2;
 	private double weight;

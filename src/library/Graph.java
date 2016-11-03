@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Represents a graph as an adjacency list.
+ */
 public class Graph {
 	
 	private List<Vertice> v = new ArrayList<Vertice>();
