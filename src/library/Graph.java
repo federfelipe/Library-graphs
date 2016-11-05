@@ -1,8 +1,10 @@
 package library;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a graph as an adjacency list.
@@ -11,7 +13,9 @@ public class Graph {
 
 	private List<Vertice> v = new ArrayList<Vertice>();
 	private List<Edge> e = new ArrayList<Edge>();
-
+	private static int numCompConex=0;
+	private static Map<Integer,List<Vertice>> mapaComp = new HashMap<Integer,List<Vertice>>();
+	
 	// Getters and setters
 	public List<Vertice> getV() {
 		return v;
@@ -28,7 +32,42 @@ public class Graph {
 	public void setE(List<Edge> e) {
 		this.e = e;
 	}
-
+	
+	public int getNumComp(){
+		return numCompConex;
+	}
+	
+	
+	
+	/**
+	 * Analyzes in which each vertex connected component is and reports the total number of connected components of the graph.
+	 *  Besides, put in a map all of vertices which belong the same component
+	 */
+	public void analisarComponentesConex(){
+		int compMax=0;
+		List<Vertice> lComp = new ArrayList<Vertice>();
+		Iterator<Vertice> it = v.iterator();
+		while (it.hasNext()) {
+			Vertice cv = it.next();
+			int comp = cv.getComponente();
+			lComp.add(cv);
+			if(!(mapaComp.containsKey(comp))){ //if it didn't have that number of component, then put of the first time
+			mapaComp.put(comp, lComp);
+			}else{//if the map already had this number of component, then just update the list with the new vertice 
+			mapaComp.replace(comp, lComp);
+			}
+			
+			if(comp > compMax){
+				compMax = comp;
+			}
+		}
+		numCompConex = compMax;
+		
+	}
+	
+	
+	
+	
 	/**
 	 * Prints the vertices contained in a graph and it's adjacent vertices.
 	 */

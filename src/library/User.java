@@ -11,6 +11,10 @@ public class User {
 		Graph g = teste.readFileAsAdjacencyList(args[0]);
 		double[][] m = g.adjacencyMatrix();
 		printMatrix(m);
+		
+		BuscaProfund.DFS(g);
+		g.analisarComponentesConex();
+		
 	}
 
 	public static void printMatrix(double[][] m) {

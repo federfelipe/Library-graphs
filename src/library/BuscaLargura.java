@@ -1,6 +1,7 @@
 package library;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class BuscaLargura {
@@ -10,9 +11,14 @@ public class BuscaLargura {
 	
 	public static void BFS(Graph g, Vertice s){
 	
+		List<Vertice> vet = g.getV();
+
+		Vertice ve = vet.get(s.getNumero());
+
+		
 		try{
-		q.offer(s);
-		s.setVisitado(true);
+		q.offer(ve);
+		ve.setVisitado(true);
 		while(!(q.isEmpty())){
 			Vertice u = q.poll();
 			System.out.println("");
