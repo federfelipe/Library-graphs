@@ -36,9 +36,7 @@ public class Graph {
 	public int getNumComp(){
 		return numCompConex;
 	}
-	
-	
-	
+		
 	/**
 	 * Analyzes in which each vertex connected component is and reports the total number of connected components of the graph.
 	 *  Besides, put in a map all of vertices which belong the same component
@@ -65,9 +63,7 @@ public class Graph {
 		
 	}
 	
-	
-	
-	
+
 	/**
 	 * Prints the vertices contained in a graph and it's adjacent vertices.
 	 */
@@ -87,7 +83,7 @@ public class Graph {
 
 	public double[][] adjacencyMatrix() {
 		double[][] m = null;
-		if (v != null && e != null) {
+		if (!v.isEmpty() && !e.isEmpty()) {
 			m = new double[v.size()][v.size()];
 			Iterator<Edge> it = e.iterator();
 			while (it.hasNext()) {
@@ -96,11 +92,21 @@ public class Graph {
 				m[edge.getV2().getNumero()][edge.getV1().getNumero()] = edge.getWeight();
 			}
 
+		} else if (e.isEmpty()){          /* HERE */
+			m = new double[v.size()][v.size()];
+			Iterator<Vertice> it = v.iterator();
+			while (it.hasNext()) {
+				Vertice vertice = it.next();
+				Iterator<Vertice> itAdj = vertice.getAdj().iterator();
+					while (itAdj.hasNext()) { 
+						Vertice vAdj = it.next();
+						m[vertice.getNumero()][vAdj.getNumero()] = 1;
+					}
+		      }
 		} else {
 			System.out.println("This graph does not have vertices.");
 			return null;
 		}
-
 		return m;
 	}
 
