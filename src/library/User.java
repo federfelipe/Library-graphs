@@ -8,11 +8,11 @@ public class User {
 	public static void main(String[] args) {
 
 		LibraryGraphs teste = new LibraryGraphs();
-		Graph g = teste.readFileAsAdjacencyList(args[0]);
+		Graph g = teste.readFileAsAdjacencyList("C:\\teste.txt");
 		double[][] m = g.adjacencyMatrix();
 		printMatrix(m);
 		
-		BuscaProfund.DFS(g);
+		LibraryGraphs.DFS(g);
 		g.analisarComponentesConex();
 		
 	}
