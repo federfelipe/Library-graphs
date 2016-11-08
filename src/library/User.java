@@ -8,7 +8,7 @@ public class User {
 	public static void main(String[] args) {
 
 		LibraryGraphs teste = new LibraryGraphs();
-		Graph g = teste.readFileAsAdjacencyList("C:\\teste.txt");
+		Graph g = teste.readFileAsAdjacencyList(args[0]);
 		double[][] m = g.adjacencyMatrix();
 		printMatrix(m);
 		

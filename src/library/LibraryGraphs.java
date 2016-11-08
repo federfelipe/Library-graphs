@@ -50,7 +50,11 @@ public class LibraryGraphs {
 					if (line.length == 3) {
 						e.add(new Edge(v.get(Integer.parseInt(line[0]) - 1), v.get(Integer.parseInt(line[1]) - 1),
 								Double.parseDouble(line[2])));
-					} 
+					} else {
+						e.add(new Edge(v.get(Integer.parseInt(line[0]) - 1), 
+								v.get(Integer.parseInt(line[1]) - 1),
+								0));
+					}
 				}
 			} catch (NumberFormatException nfe) {
 				System.out.println("The file " + filePath + " doesn't match with the library standard");
