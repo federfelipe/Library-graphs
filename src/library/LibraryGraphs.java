@@ -94,7 +94,7 @@ public class LibraryGraphs {
 			while(!(q.isEmpty())){
 				Vertice u = q.poll();
 				System.out.println("");
-				System.out.print( + u.getNumero() + " adjs : ");
+				System.out.print( + u.getNumero() + " level on tree: " + u.getNivel() + " adjs : ");
 				for (Vertice v : u.adj) {
 					if(v.isVisitado() == false){
 						v.setPai(u);
