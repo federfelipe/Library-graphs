@@ -11,6 +11,8 @@ public class Vertice {
 	private int numero;
 	private boolean visitado=false;
 	private Vertice pai;
+	//Usado para representar. Ver com o professor se é isso mesmo
+	private int nivel=0;
 
 	private int componente;
 	List<Vertice> adj = new ArrayList<Vertice>();
@@ -41,6 +43,7 @@ public class Vertice {
 
 	public void setPai(Vertice pai) {
 		this.pai = pai;
+		this.nivel = (pai.getNivel()+1);
 	}
 
 	public void setVisitado(boolean visitado) {
@@ -52,6 +55,14 @@ public class Vertice {
 	}
 	public int getComponente(){
 		return componente;
+	}
+	//Não sei se deverá ser utilizado
+	public void setNivel(int nivel){
+		this.nivel = nivel;
+	}
+	
+	public int getNivel(){
+		return nivel;
 	}
 
 	public List<Vertice> getAdj() {
