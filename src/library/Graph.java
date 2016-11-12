@@ -41,7 +41,7 @@ public class Graph {
 	 * Analyzes in which each vertex connected component is and reports the total number of connected components of the graph.
 	 *  Besides, put in a map all of vertices which belong the same component
 	 */
-	public void analisarComponentesConex(){
+	public void analyseComponentesConex(){
 		int compMax=0;
 		List<Vertice> lComp = new ArrayList<Vertice>();
 		Iterator<Vertice> it = v.iterator();
@@ -49,12 +49,8 @@ public class Graph {
 			Vertice cv = it.next();
 			int comp = cv.getComponente();
 			lComp.add(cv);
-			if(!(mapaComp.containsKey(comp))){ //if it didn't have that number of component, then put of the first time
 			mapaComp.put(comp, lComp);
-			}else{//if the map already had this number of component, then just update the list with the new vertice 
-			mapaComp.replace(comp, lComp);
-			}
-			
+						
 			if(comp > compMax){
 				compMax = comp;
 			}
@@ -71,10 +67,10 @@ public class Graph {
 		Iterator<Vertice> it = v.iterator();
 		while (it.hasNext()) {
 			Vertice cv = it.next();
-			System.out.println("Vertice: " + cv.getNumero());
+			System.out.println("Vertice: " + cv.getNumber());
 			System.out.print("Adjacent vertices: ");
 			for (Vertice v1 : cv.getAdj()) {
-				System.out.print(v1.getNumero() + " ");
+				System.out.print(v1.getNumber() + " ");
 			}
 			System.out.println("");
 
@@ -88,8 +84,8 @@ public class Graph {
 			Iterator<Edge> it = e.iterator();
 			while (it.hasNext()) {
 				Edge edge = it.next();
-				m[edge.getV1().getNumero()][edge.getV2().getNumero()] = edge.getWeight();
-				m[edge.getV2().getNumero()][edge.getV1().getNumero()] = edge.getWeight();
+				m[edge.getV1().getNumber()][edge.getV2().getNumber()] = edge.getWeight();
+				m[edge.getV2().getNumber()][edge.getV1().getNumber()] = edge.getWeight();
 			}
 
 		} else if (e.isEmpty()){          /* HERE */
@@ -100,7 +96,7 @@ public class Graph {
 				Iterator<Vertice> itAdj = vertice.getAdj().iterator();
 					while (itAdj.hasNext()) { 
 						Vertice vAdj = it.next();
-						m[vertice.getNumero()][vAdj.getNumero()] = 1;
+						m[vertice.getNumber()][vAdj.getNumber()] = 1;
 					}
 		      }
 		} else {
