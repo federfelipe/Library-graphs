@@ -86,21 +86,21 @@ public class LibraryGraphs {
 	public static void BFS(Graph g, Vertice s) {
 				
 		    List<Vertice> vet = g.getV();
-			Vertice ve = vet.get(s.getNumero());
+			Vertice ve = vet.get(s.getNumber());
     
 			try{
 			q.offer(ve);
-			ve.setVisitado(true);
+			ve.setVisited(true);
 			while(!(q.isEmpty())){
 				Vertice u = q.poll();
 				System.out.println("");
-				System.out.print( + u.getNumero() + " level on tree: " + u.getNivel() + " adjs : ");
+				System.out.print( + u.getNumber() + " level on tree: " + u.getLevel() + " adjs : ");
 				for (Vertice v : u.adj) {
-					if(v.isVisitado() == false){
-						v.setPai(u);
-						v.setVisitado(true);
+					if(v.isVisited() == false){
+						v.setFather(u);
+						v.setVisited(true);
 						q.add(v);
-						System.out.print(v.getNumero() + " ");
+						System.out.print(v.getNumber() + " ");
 					}
 				}
 			}
@@ -119,7 +119,7 @@ public class LibraryGraphs {
 			List<Vertice> vertices = g.getV();
 			int compconex=1;
 			for (Vertice v : vertices) {
-				if(v.isVisitado() == false){
+				if(v.isVisited() == false){
 					v.setComponente(compconex);
 					DFSVisit(v,compconex);
 					compconex++;
@@ -134,10 +134,10 @@ public class LibraryGraphs {
    	 * @return void.
    	 */	
     	public static void DFSVisit(Vertice v,int compconex){
-			v.setVisitado(true);
-			System.out.println(v.getNumero());
+			v.setVisited(true);
+			System.out.println(v.getNumber());
 			for (Vertice w : v.adj) {
-				if(w.isVisitado() == false){
+				if(w.isVisited() == false){
 					DFSVisit(w,compconex);
 					w.setComponente(compconex);
 				}

@@ -13,7 +13,7 @@ public class User {
 		printMatrix(m);
 		
 		LibraryGraphs.DFS(g);
-		g.analisarComponentesConex();
+		g.analyseComponentesConex();
 		
 	}
 
