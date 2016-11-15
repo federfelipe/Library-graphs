@@ -12,32 +12,6 @@ public class Graph{
 	private int numCompConex=0;
 	private Map<Integer,List<Vertice>> mapComp = new HashMap<Integer,List<Vertice>>();
 	
-	
-	
-	public Graph() {
-		Vertice v1 = new Vertice(1);
-		v1.setComponente(1);
-		Vertice v2 = new Vertice(2);
-		v2.setComponente(1);
-		Vertice v3 = new Vertice(3);
-		v3.setComponente(1);
-		Vertice v4 = new Vertice(4);
-		v4.setComponente(1);
-		Vertice v5 = new Vertice(5);
-		v5.setComponente(2);
-		Vertice v6 = new Vertice(6);
-		v6.setComponente(3);
-		Vertice v7 = new Vertice(7);
-		v7.setComponente(3);
-		v.add(v1);
-		v.add(v2);
-		v.add(v3);
-		v.add(v4);
-		v.add(v5);
-		v.add(v6);
-		v.add(v7);
-	}
-
 	// Getters and setters
 	public List<Vertice> getV() {
 		return v;
