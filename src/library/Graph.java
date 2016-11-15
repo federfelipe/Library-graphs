@@ -1,21 +1,43 @@
 package library;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents a graph as an adjacency list.
  */
-public class Graph {
+public class Graph{
 
 	private List<Vertice> v = new ArrayList<Vertice>();
 	private List<Edge> e = new ArrayList<Edge>();
-	private static int numCompConex=0;
-	private static Map<Integer,List<Vertice>> mapaComp = new HashMap<Integer,List<Vertice>>();
+	private int numCompConex=0;
+	private Map<Integer,List<Vertice>> mapComp = new HashMap<Integer,List<Vertice>>();
 	
+	
+	
+	public Graph() {
+		Vertice v1 = new Vertice(1);
+		v1.setComponente(1);
+		Vertice v2 = new Vertice(2);
+		v2.setComponente(1);
+		Vertice v3 = new Vertice(3);
+		v3.setComponente(1);
+		Vertice v4 = new Vertice(4);
+		v4.setComponente(1);
+		Vertice v5 = new Vertice(5);
+		v5.setComponente(2);
+		Vertice v6 = new Vertice(6);
+		v6.setComponente(3);
+		Vertice v7 = new Vertice(7);
+		v7.setComponente(3);
+		v.add(v1);
+		v.add(v2);
+		v.add(v3);
+		v.add(v4);
+		v.add(v5);
+		v.add(v6);
+		v.add(v7);
+	}
+
 	// Getters and setters
 	public List<Vertice> getV() {
 		return v;
@@ -43,23 +65,71 @@ public class Graph {
 	 */
 	public void analyseComponentesConex(){
 		int compMax=0;
-		List<Vertice> lComp = new ArrayList<Vertice>();
-		Iterator<Vertice> it = v.iterator();
-		while (it.hasNext()) {
-			Vertice cv = it.next();
-			int comp = cv.getComponente();
-			lComp.add(cv);
-			mapaComp.put(comp, lComp);
+		List<Vertice> lComp = null;
+		
+		for (Vertice vet : v) {
+		
+			
+				int comp = vet.getComponente();
+				
+				if(comp > compMax){
+					compMax = comp;
+				}
+				
+			
+			if(!(mapComp.containsKey(comp))){ //if it didn't have that number of component, then put of the first time
+				lComp =new ArrayList<Vertice>();
+				lComp.add(vet);
+				mapComp.put(comp, lComp);
+				}else if(mapComp.containsKey(comp)){ //As the key already exists, and maps gets the reference of the list, we just update the list used on that key. 
+				lComp.add(vet);	
+				}else{ //For another component, cant use the same list, then is created another for that component
+					List<Vertice> l2Comp =new ArrayList<Vertice>();
+					l2Comp.add(vet);
+					mapComp.put(comp, l2Comp);
+				}
 						
-			if(comp > compMax){
-				compMax = comp;
-			}
+			
 		}
 		numCompConex = compMax;
+
+
+		System.out.println("This Graph has " + numCompConex + " conected componentes");
 		
-	}
+		List<Map.Entry<Integer, List<Vertice>>> mapSorted = sortByValue(mapComp);
 	
 
+	
+			for (Map.Entry<Integer, List<Vertice>> entry : mapSorted)
+	        {
+				System.out.print("The componente "+ entry.getKey() + " have ");
+						
+			System.out.println(entry.getValue().size() + " vertices: ");
+			List<Vertice> vet = entry.getValue();
+			for (Vertice ver : vet) {
+				System.out.println(ver.getNumber());
+			}	
+	      }
+				
+	}
+	
+	/**
+	 * Complement method to sort the conected component by the quantity of vertices
+	 */
+	public static <K, V extends Comparable<? super V>> List<Map.Entry<Integer, List<Vertice>>> sortByValue(Map<Integer, List<Vertice>> mapComp2) {
+		List<Map.Entry<Integer, List<Vertice>>> list = new LinkedList<Map.Entry<Integer, List<Vertice>>>( mapComp2.entrySet() );
+	        Collections.sort( list, new Comparator<Map.Entry<Integer, List<Vertice>>>()
+	        {
+	            public int compare( Map.Entry<Integer, List<Vertice>> o1, Map.Entry<Integer, List<Vertice>> o2 )
+	            {
+	                return -((Integer)o1.getValue().size()).compareTo((Integer)o2.getValue().size() );
+	            }
+	        } );
+	  
+	        return list;
+	    }
+	
+	
 	/**
 	 * Prints the vertices contained in a graph and it's adjacent vertices.
 	 */
@@ -105,5 +175,6 @@ public class Graph {
 		}
 		return m;
 	}
+	
 
 }
