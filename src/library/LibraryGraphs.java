@@ -88,7 +88,7 @@ public class LibraryGraphs {
 		    List<Vertice> vet = g.getV();
 		//For clean up the important details that will be used on the search, to avoid conflict with DFS's result
 		    for (Vertice v : vet) {
-			v.setVisited() == false);
+		    	v.setVisited(false);
 		        v.setFather(null);
 		    }
 		
@@ -127,7 +127,7 @@ public class LibraryGraphs {
 	       
 	       //For clean up the important details that will be used on the search, to avoid conflict with BFS's result
 		    for (Vertice ve : vertices) {
-			ve.setVisited() == false);
+			    ve.setVisited(false);
 		        ve.setFather(null);
 		    }
 			int compconex=1;
