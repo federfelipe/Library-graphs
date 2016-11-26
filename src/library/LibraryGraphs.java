@@ -83,17 +83,17 @@ public class LibraryGraphs {
 	 *            The graph and a initial vertex.
 	 * @return void.
 	 */	
-	public static void BFS(Graph g, Vertice s) {
+	public void BFS(Graph g, Vertice s) {
 				
 		    List<Vertice> vet = g.getV();
-		//For clean up the important details that will be used on the search, to avoid conflict with DFS's result
+		//For clean up the important detail that will be used on the search, to avoid conflict with DFS's result
 		    for (Vertice v : vet) {
 		    	v.setVisited(false);
-		        v.setFather(null);
 		    }
 		
 		
 			Vertice ve = vet.get(s.getNumber());
+			ve.setLevel(0);
     
 			try{
 			q.offer(ve);
@@ -101,7 +101,7 @@ public class LibraryGraphs {
 			while(!(q.isEmpty())){
 				Vertice u = q.poll();
 				System.out.println("");
-				System.out.print( + u.getNumber() + " level on tree: " + u.getLevel() + " adjs : ");
+				System.out.print( + u.getNumber() + " level on tree: " + u.getLevel() + " father of vertices : ");
 				for (Vertice v : u.adj) {
 					if(v.isVisited() == false){
 						v.setFather(u);
@@ -122,13 +122,12 @@ public class LibraryGraphs {
 	 *            The graph 
 	 * @return void.
 	 */	
-       public static void DFS(Graph g){
+       public  void DFS(Graph g){
 			List<Vertice> vertices = g.getV();
 	       
-	       //For clean up the important details that will be used on the search, to avoid conflict with BFS's result
+	       //For clean up the important detail that will be used on the search, to avoid conflict with BFS's result
 		    for (Vertice ve : vertices) {
 			    ve.setVisited(false);
-		        ve.setFather(null);
 		    }
 			int compconex=1;
 			for (Vertice v : vertices) {
@@ -148,7 +147,6 @@ public class LibraryGraphs {
    	 */	
     	public static void DFSVisit(Vertice v,int compconex){
 			v.setVisited(true);
-			System.out.println(v.getNumber());
 			for (Vertice w : v.adj) {
 				if(w.isVisited() == false){
 					DFSVisit(w,compconex);
