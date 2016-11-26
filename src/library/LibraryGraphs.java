@@ -50,7 +50,11 @@ public class LibraryGraphs {
 					if (line.length == 3) {
 						e.add(new Edge(v.get(Integer.parseInt(line[0]) - 1), v.get(Integer.parseInt(line[1]) - 1),
 								Double.parseDouble(line[2])));
-					} 
+					} else {
+						e.add(new Edge(v.get(Integer.parseInt(line[0]) - 1), 
+								v.get(Integer.parseInt(line[1]) - 1),
+								0));
+					}
 				}
 			} catch (NumberFormatException nfe) {
 				System.out.println("The file " + filePath + " doesn't match with the library standard");
@@ -79,24 +83,31 @@ public class LibraryGraphs {
 	 *            The graph and a initial vertex.
 	 * @return void.
 	 */	
-	public static void BFS(Graph g, Vertice s) {
+	public void BFS(Graph g, Vertice s) {
 				
 		    List<Vertice> vet = g.getV();
-			Vertice ve = vet.get(s.getNumero());
+		//For clean up the important detail that will be used on the search, to avoid conflict with DFS's result
+		    for (Vertice v : vet) {
+		    	v.setVisited(false);
+		    }
+		
+		
+			Vertice ve = vet.get(s.getNumber());
+			ve.setLevel(0);
     
 			try{
 			q.offer(ve);
-			ve.setVisitado(true);
+			ve.setVisited(true);
 			while(!(q.isEmpty())){
 				Vertice u = q.poll();
 				System.out.println("");
-				System.out.print( + u.getNumero() + " adjs : ");
+				System.out.print( + u.getNumber() + " level on tree: " + u.getLevel() + " father of vertices : ");
 				for (Vertice v : u.adj) {
-					if(v.isVisitado() == false){
-						v.setPai(u);
-						v.setVisitado(true);
+					if(v.isVisited() == false){
+						v.setFather(u);
+						v.setVisited(true);
 						q.add(v);
-						System.out.print(v.getNumero() + " ");
+						System.out.print(v.getNumber() + " ");
 					}
 				}
 			}
@@ -111,11 +122,16 @@ public class LibraryGraphs {
 	 *            The graph 
 	 * @return void.
 	 */	
-       public static void DFS(Graph g){
+       public  void DFS(Graph g){
 			List<Vertice> vertices = g.getV();
+	       
+	       //For clean up the important detail that will be used on the search, to avoid conflict with BFS's result
+		    for (Vertice ve : vertices) {
+			    ve.setVisited(false);
+		    }
 			int compconex=1;
 			for (Vertice v : vertices) {
-				if(v.isVisitado() == false){
+				if(v.isVisited() == false){
 					v.setComponente(compconex);
 					DFSVisit(v,compconex);
 					compconex++;
@@ -130,10 +146,9 @@ public class LibraryGraphs {
    	 * @return void.
    	 */	
     	public static void DFSVisit(Vertice v,int compconex){
-			v.setVisitado(true);
-			System.out.println(v.getNumero());
+			v.setVisited(true);
 			for (Vertice w : v.adj) {
-				if(w.isVisitado() == false){
+				if(w.isVisited() == false){
 					DFSVisit(w,compconex);
 					w.setComponente(compconex);
 				}
@@ -144,7 +159,6 @@ public class LibraryGraphs {
     	
  /*public class DikjstraAlgorithm {
     public static void main(String[] args) {
-
         Graph graph = new Graph(9);
         for (int i = 0; i < 9; i++) {
             graph.addVertex(i);
@@ -377,3 +391,6 @@ public class LibraryGraphs {
 
  
 }
+
+
+

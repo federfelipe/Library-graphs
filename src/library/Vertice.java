@@ -8,43 +8,46 @@ import java.util.List;
  */
 public class Vertice {
 	
-	private int numero;
-	private boolean visitado=false;
-	private Vertice pai;
+	private int number;
+	private boolean visited=false;
+	private Vertice father;
+	//Used for Graph's representation
+	private int level=0;
 
 	private int componente;
 	List<Vertice> adj = new ArrayList<Vertice>();
 	
 	public Vertice(int num){
-		numero=num;
+		number=num;
 	}
 	
 	public void addAdj(Vertice v){
 		adj.add(v);
 	}
 
-	public int getNumero() {
-		return numero;
+	public int getNumber() {
+		return number;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
-	public boolean isVisitado() {
-		return visitado;
+	public boolean isVisited() {
+		return visited;
 	}
 	
-	public Vertice getPai() {
-		return pai;
+	public Vertice getFather() {
+		return father;
 	}
 
-	public void setPai(Vertice pai) {
-		this.pai = pai;
+	public void setFather(Vertice father) {
+		this.father = father;
+		this.level = (father.getLevel()+1);
 	}
 
-	public void setVisitado(boolean visitado) {
-		this.visitado = visitado;
+	public void setVisited(boolean visited) {
+		this.visited = visited;
 	}
 	
 	public void setComponente(int componente){
@@ -52,6 +55,14 @@ public class Vertice {
 	}
 	public int getComponente(){
 		return componente;
+	}
+
+	public void setLevel(int level){
+		this.level = level;
+	}
+	
+	public int getLevel(){
+		return level;
 	}
 
 	public List<Vertice> getAdj() {

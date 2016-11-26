@@ -1,20 +1,16 @@
 package library;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents a graph as an adjacency list.
  */
-public class Graph {
+public class Graph{
 
 	private List<Vertice> v = new ArrayList<Vertice>();
 	private List<Edge> e = new ArrayList<Edge>();
-	private static int numCompConex=0;
-	private static Map<Integer,List<Vertice>> mapaComp = new HashMap<Integer,List<Vertice>>();
+	private int numCompConex=0;
+	private Map<Integer,List<Vertice>> mapComp = new HashMap<Integer,List<Vertice>>();
 	
 	// Getters and setters
 	public List<Vertice> getV() {
@@ -41,29 +37,73 @@ public class Graph {
 	 * Analyzes in which each vertex connected component is and reports the total number of connected components of the graph.
 	 *  Besides, put in a map all of vertices which belong the same component
 	 */
-	public void analisarComponentesConex(){
+	public void analyseComponentesConex(){
 		int compMax=0;
-		List<Vertice> lComp = new ArrayList<Vertice>();
-		Iterator<Vertice> it = v.iterator();
-		while (it.hasNext()) {
-			Vertice cv = it.next();
-			int comp = cv.getComponente();
-			lComp.add(cv);
-			if(!(mapaComp.containsKey(comp))){ //if it didn't have that number of component, then put of the first time
-			mapaComp.put(comp, lComp);
-			}else{//if the map already had this number of component, then just update the list with the new vertice 
-			mapaComp.replace(comp, lComp);
-			}
+		List<Vertice> lComp = null;
+		
+		for (Vertice vet : v) {
+		
 			
-			if(comp > compMax){
-				compMax = comp;
-			}
+				int comp = vet.getComponente();
+				
+				if(comp > compMax){
+					compMax = comp;
+				}
+				
+			
+			if(!(mapComp.containsKey(comp))){ //if it didn't have that number of component, then put of the first time
+				lComp =new ArrayList<Vertice>();
+				lComp.add(vet);
+				mapComp.put(comp, lComp);
+				}else if(mapComp.containsKey(comp)){ //As the key already exists, and maps gets the reference of the list, we just update the list used on that key. 
+				lComp.add(vet);	
+				}else{ //For another component, cant use the same list, then is created another for that component
+					List<Vertice> l2Comp =new ArrayList<Vertice>();
+					l2Comp.add(vet);
+					mapComp.put(comp, l2Comp);
+				}
+						
+			
 		}
 		numCompConex = compMax;
+
+
+		System.out.println("This Graph has " + numCompConex + " conected componentes");
 		
-	}
+		List<Map.Entry<Integer, List<Vertice>>> mapSorted = sortByValue(mapComp);
 	
 
+	
+			for (Map.Entry<Integer, List<Vertice>> entry : mapSorted)
+	        {
+				System.out.print("The componente "+ entry.getKey() + " have ");
+						
+			System.out.println(entry.getValue().size() + " vertices: ");
+			List<Vertice> vet = entry.getValue();
+			for (Vertice ver : vet) {
+				System.out.println(ver.getNumber());
+			}	
+	      }
+				
+	}
+	
+	/**
+	 * Complement method to sort the conected component by the quantity of vertices
+	 */
+	public static <K, V extends Comparable<? super V>> List<Map.Entry<Integer, List<Vertice>>> sortByValue(Map<Integer, List<Vertice>> mapComp2) {
+		List<Map.Entry<Integer, List<Vertice>>> list = new LinkedList<Map.Entry<Integer, List<Vertice>>>( mapComp2.entrySet() );
+	        Collections.sort( list, new Comparator<Map.Entry<Integer, List<Vertice>>>()
+	        {
+	            public int compare( Map.Entry<Integer, List<Vertice>> o1, Map.Entry<Integer, List<Vertice>> o2 )
+	            {
+	                return -((Integer)o1.getValue().size()).compareTo((Integer)o2.getValue().size() );
+	            }
+	        } );
+	  
+	        return list;
+	    }
+	
+	
 	/**
 	 * Prints the vertices contained in a graph and it's adjacent vertices.
 	 */
@@ -71,10 +111,10 @@ public class Graph {
 		Iterator<Vertice> it = v.iterator();
 		while (it.hasNext()) {
 			Vertice cv = it.next();
-			System.out.println("Vertice: " + cv.getNumero());
+			System.out.println("Vertice: " + cv.getNumber());
 			System.out.print("Adjacent vertices: ");
 			for (Vertice v1 : cv.getAdj()) {
-				System.out.print(v1.getNumero() + " ");
+				System.out.print(v1.getNumber() + " ");
 			}
 			System.out.println("");
 
@@ -88,8 +128,8 @@ public class Graph {
 			Iterator<Edge> it = e.iterator();
 			while (it.hasNext()) {
 				Edge edge = it.next();
-				m[edge.getV1().getNumero()][edge.getV2().getNumero()] = edge.getWeight();
-				m[edge.getV2().getNumero()][edge.getV1().getNumero()] = edge.getWeight();
+				m[edge.getV1().getNumber()][edge.getV2().getNumber()] = edge.getWeight();
+				m[edge.getV2().getNumber()][edge.getV1().getNumber()] = edge.getWeight();
 			}
 
 		} else if (e.isEmpty()){          /* HERE */
@@ -100,7 +140,7 @@ public class Graph {
 				Iterator<Vertice> itAdj = vertice.getAdj().iterator();
 					while (itAdj.hasNext()) { 
 						Vertice vAdj = it.next();
-						m[vertice.getNumero()][vAdj.getNumero()] = 1;
+						m[vertice.getNumber()][vAdj.getNumber()] = 1;
 					}
 		      }
 		} else {
@@ -109,5 +149,6 @@ public class Graph {
 		}
 		return m;
 	}
+	
 
 }
