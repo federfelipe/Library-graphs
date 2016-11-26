@@ -14,7 +14,6 @@ public class User {
 		
 		
 		Scanner scan = new Scanner(System.in);
-		int resp;
 		System.out.println(" Welcome to library Graphs. What do you want to know? Enter the number of desired option");
 		do{
 		System.out.println("For:");
@@ -27,7 +26,7 @@ public class User {
 		System.out.println("7-Minimum Spanning Tree");
 		System.out.println("8-Average Distance");
 		System.out.println("9-Exit the program");
-		resp = scan.nextInt();
+		int resp = scan.nextInt();
 		
 		switch (resp) {
 		case 1:
@@ -71,11 +70,11 @@ public class User {
 			System.exit(0);
 			
 		default:
-			System.out.println("Option not available");
+			System.out.println("Option not available. Enter one of the options below.");
 			break;
 		}
 				
-		}while(resp != 9);
+		}while(true);
 	}
 
 	public static void printMatrix(double[][] m) {
