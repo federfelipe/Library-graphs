@@ -37,14 +37,18 @@ public class Graph{
 	 * Analyzes in which each vertex connected component is and reports the total number of connected components of the graph.
 	 *  Besides, put in a map all of vertices which belong the same component
 	 */
-	public void analyseComponentesConex(){
+	public void analyseComponentesConex() throws NullPointerException{
 		int compMax=0;
 		List<Vertice> lComp = null;
 		
 		for (Vertice vet : v) {
 		
-			
+				
 				int comp = vet.getComponente();
+				
+				if(comp == 0){
+					throw new NullPointerException();
+				}
 				
 				if(comp > compMax){
 					compMax = comp;
@@ -55,8 +59,9 @@ public class Graph{
 				lComp =new ArrayList<Vertice>();
 				lComp.add(vet);
 				mapComp.put(comp, lComp);
-				}else if(mapComp.containsKey(comp)){ //As the key already exists, and maps gets the reference of the list, we just update the list used on that key. 
-				lComp.add(vet);	
+				}else if(mapComp.containsKey(comp)){ //As the key already exists, we get the list used and just update the list on that key. 
+					List<Vertice> lCompp = mapComp.get(comp);
+					lCompp.add(vet);	
 				}else{ //For another component, cant use the same list, then is created another for that component
 					List<Vertice> l2Comp =new ArrayList<Vertice>();
 					l2Comp.add(vet);
