@@ -144,6 +144,7 @@ public class LibraryGraphs {
 			ve.setVisited(false);
 		}
 		int compconex = 1;
+		System.out.println("Order of visitation: ");
 		for (Vertice v : vertices) {
 			if (v.isVisited() == false) {
 				v.setComponente(compconex);
@@ -161,6 +162,7 @@ public class LibraryGraphs {
 	 */
 	public static void DFSVisit(Vertice v, int compconex) {
 		v.setVisited(true);
+		System.out.print(v.getNumber());
 		for (Vertice w : v.adj) {
 			if (w.isVisited() == false) {
 				DFSVisit(w, compconex);

@@ -79,7 +79,7 @@ public class Graph {
 	 * total number of connected components of the graph. Besides, put in a map
 	 * all of vertices which belong the same component
 	 */
-	public void analyseComponentesConex() {
+	public void analyseComponentesConex() throws NullPointerException {
 		int compMax = 0;
 		List<Vertice> lComp = null;
 
@@ -159,6 +159,7 @@ public class Graph {
 
 	/**
 	 * Creates a matrix from the adjacency list.
+	 * 
 	 * @return a matrix containing the weights of each tree.
 	 */
 	public double[][] adjacencyMatrix() {
@@ -218,10 +219,14 @@ public class Graph {
 	}
 
 	/**
-	 * Writes a file containing info about the graph. The file has the same format as the input one used by
+	 * Writes a file containing info about the graph. The file has the same
+	 * format as the input one used by
 	 * {@link library.LibraryGraphs#readFileAsAdjacencyList}
-	 * @param path The output file path.
-	 * @param encoding The encoding to be used (e.g. UTF-8)
+	 * 
+	 * @param path
+	 *            The output file path.
+	 * @param encoding
+	 *            The encoding to be used (e.g. UTF-8)
 	 */
 	public void createGraphFile(String path, String encoding) {
 		PrintWriter file = null;
@@ -231,7 +236,8 @@ public class Graph {
 			file.println(v.size());
 			for (Edge edge : this.e) {
 				edges.remove(new Tuple(edge.getV2(), edge.getV1()));
-				file.println((edge.getV1().getNumber() + 1) + " " + (edge.getV2().getNumber()+ 1) + " " + edge.getWeight());
+				file.println(
+						(edge.getV1().getNumber() + 1) + " " + (edge.getV2().getNumber() + 1) + " " + edge.getWeight());
 				edges.remove(new Tuple(edge.getV1(), edge.getV2()));
 			}
 
@@ -249,7 +255,8 @@ public class Graph {
 
 	/**
 	 * @brief Creates a map containing all the Vertices of the Graph.
-	 * @return a map containing {@link library.Integer} as keys and {@link library.Vertice} as values.
+	 * @return a map containing {@link library.Integer} as keys and
+	 *         {@link library.Vertice} as values.
 	 */
 	public Map<Integer, Vertice> getVeticesMap() {
 		Map<Integer, Vertice> m = new HashMap<Integer, Vertice>();
@@ -265,7 +272,8 @@ public class Graph {
 
 	/**
 	 * @brief Creates a map containing all the Edges of the Graph.
-	 * @return a map containing {@link library.Tuple} as keys and {@link library.Edge} as values.
+	 * @return a map containing {@link library.Tuple} as keys and
+	 *         {@link library.Edge} as values.
 	 */
 	public Map<Tuple, Edge> getEdgesMap() {
 		Map<Tuple, Edge> m = new HashMap<Tuple, Edge>();

@@ -36,7 +36,7 @@ public class User {
 				break;
 
 			case 2:
-				System.out.println("Which vertice do you want to search?");
+				System.out.println("Which vertice do you want to search? Enter the number");
 				int nvert = scan.nextInt();
 				scan.nextLine();
 				Vertice s = new Vertice(nvert);
@@ -48,8 +48,13 @@ public class User {
 				break;
 
 			case 4:
-				g.analyseComponentesConex();
-				break;
+				try {
+					g.analyseComponentesConex();
+					break;
+				} catch (NullPointerException e) {
+					System.out.println("You must first search with Deepth Search, then analyse the components");
+					break;
+				}
 
 			case 5:
 
@@ -74,7 +79,7 @@ public class User {
 				String encoding = scan.nextLine();
 				g.createInfoFile(path, encoding);
 				break;
-				
+
 			case 0:
 				scan.close();
 				System.exit(0);
