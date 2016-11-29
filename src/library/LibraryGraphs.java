@@ -5,9 +5,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * A class containing functions to manipulate graphs.
@@ -16,7 +21,7 @@ public class LibraryGraphs {
 
 	// Queue of BFS method
 	static Queue<Vertice> q = new LinkedList<Vertice>();
-	
+
 	/**
 	 * @brief Reads a file containing information about a graph as an adjacency
 	 *        list.
@@ -42,18 +47,24 @@ public class LibraryGraphs {
 				for (int i = 0; i < size; i++) {
 					v.add(new Vertice(i));
 				}
-
+				boolean first = true;
 				while ((sCurrentLine = br.readLine()) != null) {
 					line = sCurrentLine.split(" ");
 					v.get(Integer.parseInt(line[0]) - 1).addAdj(v.get(Integer.parseInt(line[1]) - 1));
 					v.get(Integer.parseInt(line[1]) - 1).addAdj(v.get(Integer.parseInt(line[0]) - 1));
 					if (line.length == 3) {
+						if (first) {
+							first = false;
+							g.setWeighted(true);
+						}
 						e.add(new Edge(v.get(Integer.parseInt(line[0]) - 1), v.get(Integer.parseInt(line[1]) - 1),
 								Double.parseDouble(line[2])));
 					} else {
-						e.add(new Edge(v.get(Integer.parseInt(line[0]) - 1), 
-								v.get(Integer.parseInt(line[1]) - 1),
-								0));
+						if (first) {
+							first = false;
+							g.setWeighted(false);
+						}
+						e.add(new Edge(v.get(Integer.parseInt(line[0]) - 1), v.get(Integer.parseInt(line[1]) - 1), 0));
 					}
 				}
 			} catch (NumberFormatException nfe) {
@@ -76,34 +87,35 @@ public class LibraryGraphs {
 		}
 		return g;
 	}
-	
+
 	/**
-	 * @brief BFS method for traversing and searching tree or graph data structures
-	 * @param Graph g, Vertice s
-	 *            The graph and a initial vertex.
+	 * @brief BFS method for traversing and searching tree or graph data
+	 *        structures
+	 * @param Graph
+	 *            g, Vertice s The graph and a initial vertex.
 	 * @return void.
-	 */	
+	 */
 	public void BFS(Graph g, Vertice s) {
-				
-		    List<Vertice> vet = g.getV();
-		//For clean up the important detail that will be used on the search, to avoid conflict with DFS's result
-		    for (Vertice v : vet) {
-		    	v.setVisited(false);
-		    }
-		
-		
-			Vertice ve = vet.get(s.getNumber());
-			ve.setLevel(0);
-    
-			try{
+
+		List<Vertice> vet = g.getV();
+		// For clean up the important detail that will be used on the search, to
+		// avoid conflict with DFS's result
+		for (Vertice v : vet) {
+			v.setVisited(false);
+		}
+
+		Vertice ve = vet.get(s.getNumber());
+		ve.setLevel(0);
+
+		try {
 			q.offer(ve);
 			ve.setVisited(true);
-			while(!(q.isEmpty())){
+			while (!(q.isEmpty())) {
 				Vertice u = q.poll();
 				System.out.println("");
-				System.out.print( + u.getNumber() + " level on tree: " + u.getLevel() + " father of vertices : ");
+				System.out.print(+u.getNumber() + " level on tree: " + u.getLevel() + " father of vertices : ");
 				for (Vertice v : u.adj) {
-					if(v.isVisited() == false){
+					if (v.isVisited() == false) {
 						v.setFather(u);
 						v.setVisited(true);
 						q.add(v);
@@ -111,286 +123,148 @@ public class LibraryGraphs {
 					}
 				}
 			}
-		 } catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		 }
-      }
-	
+		}
+	}
+
 	/**
-	 * @brief DFS method for traversing and searching tree or graph data structures
-	 * @param Graph g
-	 *            The graph 
+	 * @brief DFS method for traversing and searching tree or graph data
+	 *        structures
+	 * @param Graph
+	 *            g The graph
 	 * @return void.
-	 */	
-       public  void DFS(Graph g){
-			List<Vertice> vertices = g.getV();
-	       
-	       //For clean up the important detail that will be used on the search, to avoid conflict with BFS's result
-		    for (Vertice ve : vertices) {
-			    ve.setVisited(false);
-		    }
-			int compconex=1;
-			for (Vertice v : vertices) {
-				if(v.isVisited() == false){
-					v.setComponente(compconex);
-					DFSVisit(v,compconex);
-					compconex++;
-				}
-			 }
-		 }
-		
-       /**
-   	 * @brief DFSVisit is a complement method of DFS
-   	 * @param Vertice v, int compconex
-   	 *            The vertice and the number of compConex 
-   	 * @return void.
-   	 */	
-    	public static void DFSVisit(Vertice v,int compconex){
-			v.setVisited(true);
-			for (Vertice w : v.adj) {
-				if(w.isVisited() == false){
-					DFSVisit(w,compconex);
-					w.setComponente(compconex);
-				}
+	 */
+	public void DFS(Graph g) {
+		List<Vertice> vertices = g.getV();
+
+		// For clean up the important detail that will be used on the search, to
+		// avoid conflict with BFS's result
+		for (Vertice ve : vertices) {
+			ve.setVisited(false);
+		}
+		int compconex = 1;
+		for (Vertice v : vertices) {
+			if (v.isVisited() == false) {
+				v.setComponente(compconex);
+				DFSVisit(v, compconex);
+				compconex++;
 			}
 		}
-    	
-    	// Dijkstra with PriorityQueue implemented using MinHeap
-    	
- /*public class DikjstraAlgorithm {
-    public static void main(String[] args) {
-        Graph graph = new Graph(9);
-        for (int i = 0; i < 9; i++) {
-            graph.addVertex(i);
-        }
-        graph.addEdge(0, 1, 4);
-        graph.addEdge(0, 7, 8);
-        graph.addEdge(1, 0, 4);
-        graph.addEdge(1, 7, 11);
-        graph.addEdge(1, 2, 8);
-        graph.addEdge(2, 1, 8);
-        graph.addEdge(2, 3, 7);
-        graph.addEdge(2, 8, 2);
-        graph.addEdge(2, 5, 4);
-        graph.addEdge(3, 2, 7);
-        graph.addEdge(3, 4, 9);
-        graph.addEdge(3, 5, 14);
-        graph.addEdge(4, 3, 9);
-        graph.addEdge(4, 5, 10);
-        graph.addEdge(5, 2, 4);
-        graph.addEdge(5, 3, 14);
-        graph.addEdge(5, 4, 10);
-        graph.addEdge(5, 6, 2);
-        graph.addEdge(6, 5, 2);
-        graph.addEdge(6, 7, 1);
-        graph.addEdge(6, 8, 6);
-        graph.addEdge(7, 0, 8);
-        graph.addEdge(7, 1, 11);
-        graph.addEdge(7, 6, 1);
-        graph.addEdge(7, 8, 7);
-        graph.addEdge(8, 2, 2);
-        graph.addEdge(8, 6, 6);
-        graph.addEdge(8, 7, 7);
-        graph.findShortestPaths(0);
-    }
+	}
 
-    public static class Graph {
-        Vertex[] vertices;
-        int maxSize;
-        int size;
+	/**
+	 * @brief DFSVisit is a complement method of DFS
+	 * @param Vertice
+	 *            v, int compconex The vertice and the number of compConex
+	 * @return void.
+	 */
+	public static void DFSVisit(Vertice v, int compconex) {
+		v.setVisited(true);
+		for (Vertice w : v.adj) {
+			if (w.isVisited() == false) {
+				DFSVisit(w, compconex);
+				w.setComponente(compconex);
+			}
+		}
+	}
 
-        public Graph(int maxSize) {
-            this.maxSize = maxSize;
-            vertices = new Vertex[maxSize];
-        }
+	/**
+	 * Prints a matrix.
+	 * 
+	 * @param g
+	 *            The matrix to be printed.
+	 */
+	public void printMatrix(double[][] g) {
+		for (int i = 0; i < g.length; i++) {
+			for (int j = 0; j < g.length; j++) {
+				System.out.print(g[i][j] + " ");
+			}
+			System.out.println();
+		}
+	}
 
-        public void addVertex(int name) {
-            vertices[size++] = new Vertex(name);
-        }
+	/**
+	 * Generates a graph containing a MST.
+	 * 
+	 * @param graph
+	 *            The {@link library.Graph} to get the MST.
+	 * @param root
+	 *            The vertice to be taken as root.
+	 * @return A {@link library.Graph} containing the MST and the minimum
+	 *         distance of each {@link library.Vertice} between the root and
+	 *         itself.
+	 */
+	public Graph dijkstra(Graph graph, int root) {
+		Graph g = new Graph(graph), gr = new Graph();
+		Vertice aux;
+		List<Vertice> adj;
+		double[][] w = g.adjacencyMatrix();
+		Comparator<Vertice> comp = new VerticeDistanceComparator();
+		PriorityQueue<Vertice> q = new PriorityQueue<Vertice>(g.getV().size(), comp);
 
-        public void addEdge(int sourceName, int destinationName, int weight) {
-            int srcIndex = sourceName;
-            int destiIndex = destinationName;
-            vertices[srcIndex].adj = new Neighbour(destiIndex, weight, vertices[srcIndex].adj);
-            vertices[destiIndex].indegree++;
-        }
-        
-        public void findShortestPaths(int sourceName){
-            applyDikjstraAlgorith(vertices[sourceName]);
-            for(int i = 0; i < maxSize; i++){
-                System.out.println("Distance of "+vertices[i].name+" from Source: "+ vertices[i].cost);
-            }
-        }
-        
-        public class Vertex {
-            int cost;
-            int name;
-            Neighbour adj;
-            int indegree;
-            State state;
+		// Checks if the given root exists in the given graph.
+		if (g.getE().get(root) == null) {
+			System.out.println("Root vertex not found. Not executing Dijkstra Algorithm.");
+			return null;
+		}
 
-            public Vertex(int name) {
-                this.name = name;
-                cost = Integer.MAX_VALUE;
-                state = State.NEW;
-            }
+		// Checks if is possible to use Dijkstra algorithm on the given graph
+		for (Edge e : graph.getE()) {
+			if (e.getWeight() < 0.0) {
+				System.out.println(
+						"Dijkstra can't be used on this graph: There is at least one edge with a negative weight.");
+				return null;
+			}
+		}
+		if (graph.getNumComp() != 0) {
+			System.out.println(
+					"Dijkstra can't be used on this graph: the given graph has more than 1 connected component");
+			return null;
+		}
 
-            public int compareTo(Vertex v) {
-                if (this.cost == v.cost) {
-                    return 0;
-                }
-                if (this.cost < v.cost) {
-                    return -1;
-                }
-                return 1;
-            }
-        }
+		// Initialize single-source
+		for (Vertice v : g.getV()) {
+			if (v.getNumber() == root) {
+				v.setDistanceToRoot(0);
+			} else {
+				v.setFather(null);
+				v.setDistanceToRoot(Double.MAX_VALUE);
+			}
+			q.add(v);
+		}
 
-        public enum State {
-            NEW, IN_Q, VISITED
-        }
+		// Relax
+		while (gr.getV().size() < g.getV().size()) {
+			aux = q.peek();
+			gr.getV().add(new Vertice(aux));
+			adj = aux.getAdj();
 
-        public class Neighbour {
-            int index;
-            Neighbour next;
-            int weight;
+			// Gets the shortest edge and add it (and the vertice) to the
+			// result graph.
+			for (Vertice v : adj) {
+				double weight = w[aux.getNumber()][v.getNumber()];
+				// Updates current vertice's distance.
+				if (v.getDistanceToRoot() > aux.getDistanceToRoot() + weight) {
+					v.setDistanceToRoot(aux.getDistanceToRoot() + weight);
+					v.setFather(aux);
+				}
+			}
+			// For some reason, if remove() is used instead of peek() on first
+			// line, the Queue screws up.
+			q.remove();
+		}
 
-            Neighbour(int index, int weight, Neighbour next) {
-                this.index = index;
-                this.next = next;
-                this.weight = weight;
-            }
-        }
+		for (Vertice v : gr.getV()) {
+			if (v.getFather() != null) {
+				gr.getE().add(new Edge(v, v.getFather(), v.getDistanceToRoot() - v.getFather().getDistanceToRoot()));
+				// gr.getE().add(new Edge(v.getFather(), v,
+				// v.getDistanceToRoot() - v.getFather().getDistanceToRoot()));
+			}
+		}
 
-        public void applyDikjstraAlgorith(Vertex src) {
-            Heap heap = new Heap(maxSize);
-            heap.add(src);
-            src.state = State.IN_Q;
-            src.cost = 0;
-            while (!heap.isEmpty()) {
-                Vertex u = heap.remove();
-                u.state = State.VISITED;
-                Neighbour temp = u.adj;
-                while (temp != null) {
-                    if (vertices[temp.index].state == State.NEW) {
-                        heap.add(vertices[temp.index]);
-                        vertices[temp.index].state = State.IN_Q;
-                    }
-                    if (vertices[temp.index].cost > u.cost + temp.weight) {
-                        vertices[temp.index].cost = u.cost + temp.weight;
-                        heap.heapifyUP(vertices[temp.index]);
-                    }
-                    temp = temp.next;
-                }
-            }
-        }
+		return gr;
 
-        public static class Heap {
-            private Vertex[] heap;
-            private int maxSize;
-            private int size;
+	}
 
-            public Heap(int maxSize) {
-                this.maxSize = maxSize;
-                heap = new Vertex[maxSize];
-            }
-
-            public void add(Vertex u) {
-                heap[size++] = u;
-                heapifyUP(size - 1);
-            }
-
-            public void heapifyUP(Vertex u) {
-                for (int i = 0; i < maxSize; i++) {
-                    if (u == heap[i]) {
-                        heapifyUP(i);
-                        break;
-                    }
-                }
-            }
-
-            public void heapifyUP(int position) {
-                int currentIndex = position;
-                Vertex currentItem = heap[currentIndex];
-                int parentIndex = (currentIndex - 1) / 2;
-                Vertex parentItem = heap[parentIndex];
-                while (currentItem.compareTo(parentItem) == -1) {
-                    swap(currentIndex, parentIndex);
-                    currentIndex = parentIndex;
-                    if (currentIndex == 0) {
-                        break;
-                    }
-                    currentItem = heap[currentIndex];
-                    parentIndex = (currentIndex - 1) / 2;
-                    parentItem = heap[parentIndex];
-                }
-            }
-
-            public Vertex remove() {
-                Vertex v = heap[0];
-                swap(0, size - 1);
-                heap[size - 1] = null;
-                size--;
-                heapifyDown(0);
-                return v;
-            }
-
-            public void heapifyDown(int postion) {
-                if (size == 1) {
-                    return;
-                }
-
-                int currentIndex = postion;
-                Vertex currentItem = heap[currentIndex];
-                int leftChildIndex = 2 * currentIndex + 1;
-                int rightChildIndex = 2 * currentIndex + 2;
-                int childIndex;
-                if (heap[leftChildIndex] == null) {
-                    return;
-                }
-                if (heap[rightChildIndex] == null) {
-                    childIndex = leftChildIndex;
-                } else if (heap[rightChildIndex].compareTo(heap[leftChildIndex]) == -1) {
-                    childIndex = rightChildIndex;
-                } else {
-                    childIndex = leftChildIndex;
-                }
-                Vertex childItem = heap[childIndex];
-                while (currentItem.compareTo(childItem) == 1) {
-                    swap(currentIndex, childIndex);
-                    currentIndex = childIndex;
-                    currentItem = heap[currentIndex];
-                    leftChildIndex = 2 * currentIndex + 1;
-                    rightChildIndex = 2 * currentIndex + 2;
-                    if (heap[leftChildIndex] == null) {
-                        return;
-                    }
-                    if (heap[rightChildIndex] == null) {
-                        childIndex = leftChildIndex;
-                    } else if (heap[rightChildIndex].compareTo(heap[leftChildIndex]) == -1) {
-                        childIndex = rightChildIndex;
-                    } else {
-                        childIndex = leftChildIndex;
-                    }
-                }
-            }
-
-            public void swap(int index1, int index2) {
-                Vertex temp = heap[index1];
-                heap[index1] = heap[index2];
-                heap[index2] = temp;
-            }
-
-            public boolean isEmpty() {
-
-                return size == 0;
-            }
-        }
-      }
-    }*/
-
- 
 }
-
-
-

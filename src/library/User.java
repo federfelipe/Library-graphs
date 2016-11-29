@@ -11,70 +11,80 @@ public class User {
 
 		LibraryGraphs lib = new LibraryGraphs();
 		Graph g = lib.readFileAsAdjacencyList(args[0]);
-		
-		
+
 		Scanner scan = new Scanner(System.in);
 		System.out.println(" Welcome to library Graphs. What do you want to know? Enter the number of desired option");
-		do{
-		System.out.println("For:");
-		System.out.println(" 1- Represent the graph in a matrix");
-		System.out.println("2- Width search");
-		System.out.println("3- Deepth search");
-		System.out.println("4-Analyse Conected Components of the Graph");
-		System.out.println("5-Distance Between Vertices");
-		System.out.println("6-Minimum Path");
-		System.out.println("7-Minimum Spanning Tree");
-		System.out.println("8-Average Distance");
-		System.out.println("9-Exit the program");
-		int resp = scan.nextInt();
-		
-		switch (resp) {
-		case 1:
-			double[][] m = g.adjacencyMatrix();
-			printMatrix(m);			
-			break;
-			
-		case 2:
-			System.out.println("Which vertice do you want to search?");
-			int nvert = scan.nextInt();
-			Vertice s = new Vertice(nvert);
-			lib.BFS(g, s);
-			break;
-			
-		case 3:
-			lib.DFS(g);
-			break;
-			
-		case 4:
-			g.analyseComponentesConex();
-			break;
-			
-		case 5:
-			
-			break;
-			
-		case 6:
-			
-			break;
-			
-		case 7:
-			
-			break;
-			
-		case 8:
-			
-			break;
-			
-		case 9:
-			scan.close();
-			System.exit(0);
-			
-		default:
-			System.out.println("Option not available. Enter one of the options below.");
-			break;
-		}
+		do {
+			System.out.println("For:");
+			System.out.println(" 1- Represent the graph in a matrix");
+			System.out.println("2- Width search");
+			System.out.println("3- Depth search");
+			System.out.println("4- Analyse Connected Components of the Graph");
+			System.out.println("5- Distance Between Vertices");
+			System.out.println("6- Minimum Path");
+			System.out.println("7- Minimum Spanning Tree");
+			System.out.println("8- Average Distance");
+			System.out.println("9- Generate file containing info");
+			System.out.println("0- Exit the program");
+			int resp = scan.nextInt();
+			scan.nextLine();
+
+			switch (resp) {
+			case 1:
+				double[][] m = g.adjacencyMatrix();
+				printMatrix(m);
+				break;
+
+			case 2:
+				System.out.println("Which vertice do you want to search?");
+				int nvert = scan.nextInt();
+				scan.nextLine();
+				Vertice s = new Vertice(nvert);
+				lib.BFS(g, s);
+				break;
+
+			case 3:
+				lib.DFS(g);
+				break;
+
+			case 4:
+				g.analyseComponentesConex();
+				break;
+
+			case 5:
+
+				break;
+
+			case 6:
+
+				break;
+
+			case 7:
+
+				break;
+
+			case 8:
+
+				break;
+
+			case 9:
+				System.out.println("Type the output file path:");
+				String path = scan.nextLine();
+				System.out.println("Type the file encoding (e.g. UTF-8):");
+				String encoding = scan.nextLine();
+				g.createInfoFile(path, encoding);
+				break;
 				
-		}while(true);
+			case 0:
+				scan.close();
+				System.exit(0);
+
+			default:
+				System.out.println("Option not available. Enter one of the options below.");
+				break;
+			}
+
+		} while (true);
 	}
 
 	public static void printMatrix(double[][] m) {
