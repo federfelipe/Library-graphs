@@ -6,13 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.Set;
 
 /**
  * A class containing functions to manipulate graphs.
@@ -95,7 +93,7 @@ public class LibraryGraphs {
 	 *            g, Vertice s The graph and a initial vertex.
 	 * @return void.
 	 */
-	public void BFS(Graph g, Vertice s) {
+	public static void BFS(Graph g, Vertice s) {
 
 		List<Vertice> vet = g.getV();
 		// For clean up the important detail that will be used on the search, to
@@ -197,7 +195,7 @@ public class LibraryGraphs {
 	 *         distance of each {@link library.Vertice} between the root and
 	 *         itself.
 	 */
-	public Graph dijkstra(Graph graph, int root) {
+	public static Graph dijkstra(Graph graph, int root) {
 		Graph g = new Graph(graph), gr = new Graph();
 		Vertice aux;
 		List<Vertice> adj;
@@ -264,9 +262,135 @@ public class LibraryGraphs {
 				// v.getDistanceToRoot() - v.getFather().getDistanceToRoot()));
 			}
 		}
-
+		gr.setMst(true);
+		gr.setWeighted(true);
 		return gr;
 
 	}
+	
+	public static double distanceBetween(Graph g, int root, int dest){
+		try {
+			if(g.isWeighted()){
+				Graph gr = LibraryGraphs.dijkstra(g, root);
+				return gr.getVerticesMap().get(dest).getDistanceToRoot();
+			} else {
+				Queue<Vertice> queue = new LinkedList<Vertice>();
+				List<Vertice> vet = g.getV();
+				// For clean up the important detail that will be used on the search, to
+				// avoid conflict with DFS's result
+				for (Vertice v : vet) {
+					v.setVisited(false);
+				}
+	
+				Vertice ve = vet.get(root);
+				ve.setLevel(0);
+	
+				try {
+					queue.offer(ve);
+					ve.setVisited(true);
+					while (!(queue.isEmpty())) {
+						Vertice u = queue.poll();
+						for (Vertice v : u.adj) {
+							if (v.isVisited() == false) {
+								v.setFather(u);
+								v.setVisited(true);
+								v.setLevel(v.getFather().getLevel()+1);
+								queue.add(v);
+								if(v.getNumber() == dest){
+									return v.getLevel();
+								}
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					return 0;
+				}
+				return 0;
+			}
+		} catch(NullPointerException e){
+			e.printStackTrace();
+			System.err.println("The given graph is null.");
+			return 0;
+		} catch(IndexOutOfBoundsException e){
+			e.printStackTrace();
+			System.err.println("At least one of the given nodes doesn't exists");
+			return 0;
+		}
+	}
+		
 
+	/**
+	 * Creates a path between the two gives vertices.
+	 * @param g The graph to be used.
+	 * @param root The first Vertice number.
+	 * @param dest The second Vertice number.
+	 * @return A {@link library.Graph} containing the minimum path, or null if it fails.
+	 */
+	public static Graph minimumPath(Graph g, int root, int dest){
+		Graph gr;
+		try {
+			if(g.isWeighted()){
+				gr = LibraryGraphs.dijkstra(g, root);
+				gr.addReverseEdges();
+				return gr.minimumPath(root, dest);
+			} else {
+				Queue<Vertice> queue = new LinkedList<Vertice>();
+				List<Vertice> vet = g.getV();
+				Map<Tuple, Edge> edges = g.getEdgesMap();
+				// For clean up the important detail that will be used on the search, to
+				// avoid conflict with DFS's result
+				for (Vertice v : vet) {
+					v.setVisited(false);
+				}
+	
+				Vertice ve = vet.get(root), aux = null;
+				ve.setLevel(0);
+	
+				try {
+					queue.offer(ve);
+					ve.setVisited(true);
+					while (!(queue.isEmpty())) {
+						Vertice u = queue.poll();
+						for (Vertice v : u.adj) {
+							if (v.isVisited() == false) {
+								v.setFather(u);
+								v.setVisited(true);
+								v.setLevel(v.getFather().getLevel()+1);
+								queue.add(v);
+								if(v.getNumber() == dest){
+									gr = new Graph();
+									while (v.getFather() != null){
+										gr.getV().add(new Vertice(v).onlyFather());
+										gr.getE().add(edges.get(new Tuple(v, v.getFather())));
+										aux = v;
+										v = v.getFather();
+									}
+									v = new Vertice(v);
+									v.setAdj(new ArrayList<Vertice>());
+									v.getAdj().add((gr.getVerticesMap().get(aux.getNumber())));
+									gr.getV().add(new Vertice(v));
+									
+									return gr;
+								}
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				return null;
+			}
+		} catch(NullPointerException e){
+			e.printStackTrace();
+			System.err.println("The given graph is null.");
+			return null;
+		} catch(IndexOutOfBoundsException e){
+			e.printStackTrace();
+			System.err.println("At least one of the given nodes doesn't exists");
+			return null;
+		}
+	}
+	
 }

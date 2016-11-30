@@ -86,13 +86,28 @@ public class Vertice {
 		this.distanceToRoot = distanceToRoot;
 	}
 
+	public List<Vertice> getAdj() {
+		return adj;
+	}
+	
+	public void setAdj(List<Vertice> adj) {
+		this.adj = adj;
+	}
+
 	// Pubçic functions
 	public void addAdj(Vertice v) {
 		adj.add(v);
 	}
-
-	public List<Vertice> getAdj() {
-		return adj;
+	
+	/**
+	 * Creates a new vertice containing only the predecessor one on the adjacency list.
+	 * @return The new {@link library.Vertice} created.
+	 */
+	public Vertice onlyFather(){
+		Vertice v = new Vertice(this);
+		v.adj = new ArrayList<Vertice>();
+		addAdj(father);
+		return v;
 	}
 
 }

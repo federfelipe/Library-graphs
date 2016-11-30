@@ -11,6 +11,7 @@ public class User {
 
 		LibraryGraphs lib = new LibraryGraphs();
 		Graph g = lib.readFileAsAdjacencyList(args[0]);
+		String path, encoding;
 
 		Scanner scan = new Scanner(System.in);
 		System.out.println(" Welcome to library Graphs. What do you want to know? Enter the number of desired option");
@@ -26,13 +27,13 @@ public class User {
 			System.out.println("8- Average Distance");
 			System.out.println("9- Generate file containing info");
 			System.out.println("0- Exit the program");
-			int resp = scan.nextInt();
+			int resp = scan.nextInt(), a, b;
 			scan.nextLine();
 
 			switch (resp) {
 			case 1:
 				double[][] m = g.adjacencyMatrix();
-				printMatrix(m);
+				lib.printMatrix(m);
 				break;
 
 			case 2:
@@ -40,7 +41,7 @@ public class User {
 				int nvert = scan.nextInt();
 				scan.nextLine();
 				Vertice s = new Vertice(nvert);
-				lib.BFS(g, s);
+				LibraryGraphs.BFS(g, s);
 				break;
 
 			case 3:
@@ -57,26 +58,48 @@ public class User {
 				}
 
 			case 5:
-
+				System.out.println("What is the value of the first Vertice?");
+				a = scan.nextInt();
+				scan.nextLine();
+				System.out.println("What is the value of the second Vertice?");
+				b = scan.nextInt();
+				scan.nextLine();
+				//Internally, the graph starts at 0, not 1.
+				LibraryGraphs.distanceBetween(g, a-1, b-1);
 				break;
 
 			case 6:
-
+				System.out.println("What is the value of the first Vertice?");
+				a = scan.nextInt();
+				scan.nextLine();
+				System.out.println("What is the value of the second Vertice?");
+				b = scan.nextInt();
+				scan.nextLine();
+				//Internally, the graph starts at 0, not 1.
+				LibraryGraphs.distanceBetween(g, a-1, b-1);
 				break;
 
 			case 7:
-
+				System.out.println("Which vertice would you like to take as root?");
+				a = scan.nextInt();
+				scan.nextLine();
+				System.out.println("What is the output file path?");
+				path = scan.nextLine();
+				System.out.println("What file encoding would you like to use? (e.g. UTF-8)");
+				encoding = scan.nextLine();
+				Graph r = LibraryGraphs.dijkstra(g, a-1);
+				r.createGraphFile(path, encoding);
 				break;
 
 			case 8:
-
+				System.out.println("The average distance of this graph is " + g.averageDistance());
 				break;
 
 			case 9:
 				System.out.println("Type the output file path:");
-				String path = scan.nextLine();
+				path = scan.nextLine();
 				System.out.println("Type the file encoding (e.g. UTF-8):");
-				String encoding = scan.nextLine();
+				encoding = scan.nextLine();
 				g.createInfoFile(path, encoding);
 				break;
 
@@ -90,18 +113,5 @@ public class User {
 			}
 
 		} while (true);
-	}
-
-	public static void printMatrix(double[][] m) {
-		for (int i = 0; i < m.length; i++) {
-			for (int j = 0; j < m.length; j++) {
-				if (j == m.length - 1) {
-					System.out.println(m[i][j]);
-				} else {
-					System.out.print(m[i][j] + " ");
-				}
-			}
-		}
-
 	}
 }

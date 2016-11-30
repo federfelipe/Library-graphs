@@ -15,6 +15,7 @@ public class Graph {
 	private int numCompConex = 0;
 	private Map<Integer, List<Vertice>> mapComp = new HashMap<Integer, List<Vertice>>();
 	private boolean weighted;
+	private boolean mst;
 
 	// Public constructors
 	public Graph() {
@@ -34,6 +35,7 @@ public class Graph {
 		this.numCompConex = g.getNumComp();
 		this.mapComp = new HashMap<Integer, List<Vertice>>(g.getMapComp());
 		this.weighted = g.isWeighted();
+		this.mst = g.isMst();
 
 	}
 
@@ -74,6 +76,14 @@ public class Graph {
 		return this.weighted;
 	}
 
+	public boolean isMst() {
+		return mst;
+	}
+
+	public void setMst(boolean mst) {
+		this.mst = mst;
+	}
+
 	/**
 	 * Analyzes in which each vertex connected component is and reports the
 	 * total number of connected components of the graph. Besides, put in a map
@@ -97,11 +107,13 @@ public class Graph {
 				lComp = new ArrayList<Vertice>();
 				lComp.add(vet);
 				mapComp.put(comp, lComp);
-			} else { // For another component, cant use the same list, then is
-						// created another for that component
-				List<Vertice> l2Comp = new ArrayList<Vertice>();
-				l2Comp.add(vet);
-				mapComp.put(comp, l2Comp);
+			} else if (mapComp.containsKey(comp)) { // As the key already
+													// exists, and maps gets the
+													// reference of the list, we
+													// just update the list used
+													// on that key.
+				List<Vertice> lCompp = mapComp.get(comp);
+				lCompp.add(vet);
 			}
 
 		}
@@ -258,7 +270,7 @@ public class Graph {
 	 * @return a map containing {@link library.Integer} as keys and
 	 *         {@link library.Vertice} as values.
 	 */
-	public Map<Integer, Vertice> getVeticesMap() {
+	public Map<Integer, Vertice> getVerticesMap() {
 		Map<Integer, Vertice> m = new HashMap<Integer, Vertice>();
 		if (v.size() == 0) {
 			System.out.println("The graph has no vertices.");
@@ -286,6 +298,64 @@ public class Graph {
 		}
 
 		return m;
+	}
+
+	/**
+	 * @brief Creates a new {@link library.Graph} that's the minimum path between the two given vertices.
+	 * This method works only for weighted MST graphs.
+	 * @param root The first vertice,
+	 * @param dest The second vertice.
+	 * @return The {@link library.Graph} created, or null if it fails.
+	 */
+	public Graph minimumPath(int root, int dest) {
+		Graph mp = null;
+		if (isWeighted()) {
+			if (!isMst()) {
+				System.out.println("Execute Dijkstra algorithm first.");
+				return null;
+			}
+			Map<Integer, Vertice> vertices = getVerticesMap();
+			Map<Tuple, Edge> edges = getEdgesMap();
+			Vertice v = vertices.get(dest);
+			if(v.getFather() == null){
+				System.out.println("The destiny vertice doesn't have a predecessor.");
+				return null;
+			}
+			mp = new Graph();
+			mp.setWeighted(true);
+			while(v.getFather() != null){
+				mp.getV().add(new Vertice(v));				
+				mp.getE().add(new Edge(edges.get(new Tuple(v.getFather(), v))));
+				
+			}			
+		}
+		return mp;
+	}
+	
+	/**
+	 * Adds reversed edges to the graphs.
+	 */
+	public void addReverseEdges(){
+		List<Edge> l = new ArrayList<Edge>(e);
+		for(Edge edge : this.e){
+			l.add(new Edge(edge.getV2(), edge.getV1()));
+		}
+		this.e = l;
+		
+	}
+	
+	/**
+	 * Calculates the average distance in the graph.
+	 * @return A double containing the average distance value.
+	 */
+	public double averageDistance(){
+		double r = 0;
+		int q = 0;
+		for(Edge e : getE()){
+			r += e.getWeight();
+			q++;
+		}
+		return r/q;
 	}
 
 }
